@@ -1,11 +1,7 @@
 import requests
-from urllib.parse import unquote
+from bs4 import BeautifulSoup
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
-# Disable warning by SSL certificate
-import ssl
-ssl._create_default_https_context = ssl._create_unverified_context
-from bs4 import BeautifulSoup
 
 
 def search(target, total):
@@ -18,14 +14,14 @@ def search(target, total):
 		text = response.text
 		soup = BeautifulSoup(text, "html.parser")
 		if text.find("detected unusual traffic") != -1:
-			print("Captcha...")
+			print("[-] Captcha o.O ...")
 			return documents
 		all_links = soup.find_all("a")
 		for link in all_links:
 			href = link.get("href", None)
-			if href and target in href:
-				if href.endswith("pdf") or href.endswith("doc") or href.endswith("docx") or href.endswith("ppt") or href.endswith("xls") or href.endswith("xlsx"):
-				    documents.append(href)
+			if href and target in href and \
+			(href.endswith("pdf") or href.endswith("doc") or href.endswith("docx") or href.endswith("ppt") or href.endswith("xls") or href.endswith("xlsx")):
+				documents.append(href)
 	except Exception as ex:
 		print(ex)
 	return documents	

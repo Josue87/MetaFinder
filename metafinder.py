@@ -11,6 +11,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-t','--target', help="Target to search",required=True)
     parser.add_argument('-l','--limit', help="Limit of documents to search", type=int, required=True)
+    parser.add_argument('-v','--verbose', help="Show results in terminal", action='store_true')
     args = parser.parse_args()
     show_banner()
     directory = "results" + sep + args.target
@@ -20,9 +21,13 @@ if __name__ == "__main__":
     print(f"Total links: {len(links)}")
     print("-----------------")
     metadata_files = download_file(links, args.target, directory)
+    print("[+] Analyzing metadata...")
     if metadata_files:
-        meta_parser(metadata_files)
+        if args.verbose:
+            meta_parser(metadata_files)
         file_parser(directory, "google.txt", metadata_files)
+        print(f"[+] The results have been saved in the file google.txt (see the directory {directory})")
+        
 
 
 

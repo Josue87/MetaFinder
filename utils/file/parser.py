@@ -6,9 +6,10 @@ def meta_parser(metadata):
         print("\n")
         print(key)
         print("-"* len(key))
-        for v in value:
-            if value[v]:
-                print(f'|_ {v}: {value[v]}')
+        print(f"URL: {value['url']}")
+        for v in value["files"]:
+            if value["files"][v]:
+                print(f'|_ {v}: {value["files"][v]}')
 
 
 def file_parser(directory, name, metadata):
@@ -18,7 +19,9 @@ def file_parser(directory, name, metadata):
             output.write("\n")
             output.write(key + "\n")
             output.write("-"* len(key) + "\n")
-            for v in value:
-                if value[v]:
-                    output.write(f'|_ {v}: {value[v]}\n')
+            output.write(f"URL: {value['url']}\n")
+            for v in value["files"]:
+                if value["files"][v]:
+                    output.write(f'|_ {v}: {value["files"][v]}\n')
+
             

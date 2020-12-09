@@ -3,6 +3,10 @@ from os import system, sep
 import wget
 from utils.file.metadata import extract_metadata
 
+# Disable warning by SSL certificate
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
+
 
 def download_file(urls_metadata, target, directory):
 	metadata_files = {}
@@ -16,11 +20,13 @@ def download_file(urls_metadata, target, directory):
 				continue
 			metadata = extract_metadata(document)
 			if metadata:
-				metadata_files[document.split(sep)[-1]] =  metadata
+				name = document.split(sep)[-1]
+				metadata_files[name] = {}
+				metadata_files[name]["url"] = url
+				metadata_files[name]["files"] =  metadata
 		sleep(2)
 		system(f'rm {directory}/*')
 		return metadata_files
 	except Exception as ex:
-		print("FAILED")
 		print(ex)
 		return None
