@@ -18,6 +18,7 @@ if __name__ == "__main__":
 
     links = google.search(args.target, args.limit)
     print(f"Total links: {len(links)}")
+    print("-----------------")
     metadata_files = download_file(links, args.target, directory)
     if metadata_files:
         meta_parser(metadata_files)

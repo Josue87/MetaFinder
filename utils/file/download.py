@@ -9,8 +9,10 @@ def download_file(urls_metadata, target, directory):
 	try:
 		for url in urls_metadata:
 			try:
-				document = wget.download(url, directory)
-			except:
+				print(f"[+] Downloading {url}")
+				document = wget.download(url, directory, bar=None)
+			except Exception as ex:
+				print(f"[-] Error: {ex}")
 				continue
 			metadata = extract_metadata(document)
 			if metadata:

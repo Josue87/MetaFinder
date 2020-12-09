@@ -20,7 +20,7 @@ def extract_doc(document):
 def extract_pdf(document):
     metadata = {}
     with open(document, 'rb') as f:
-        pdf = PdfFileReader(f)
+        pdf = PdfFileReader(f, strict=False)
         info = pdf.getDocumentInfo()
         for meta in info:
             data = info.get(meta, None)
