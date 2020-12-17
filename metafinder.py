@@ -18,16 +18,17 @@ if __name__ == "__main__":
     new_directory(directory)
 
     links = google.search(args.target, args.limit)
-    print(f"Total links: {len(links)}")
+    total_links = len(links)
+    print(f"Total links: {total_links}")
     print("-----------------")
-    metadata_files = download_file(links, args.target, directory)
-    print("[+] Analyzing metadata...")
-    if metadata_files:
-        if args.verbose:
-            meta_parser(metadata_files)
-        file_parser(directory, "google.txt", metadata_files)
-        print(f"[+] The results have been saved in the file google.txt (see the directory {directory})")
+    if total_links > 0:
+        metadata_files = download_file(links, args.target, directory)
+        print("[+] Analyzing metadata...")
+        if metadata_files:
+            if args.verbose:
+                meta_parser(metadata_files)
+            file_parser(directory, "google.txt", metadata_files)
+            print(f"[+] The results have been saved in the file google.txt (see the directory {directory})")
+    else:
+        print("[-] There is nothing to analyze. Closing...")
         
-
-
-
