@@ -27,8 +27,10 @@ if __name__ == "__main__":
         if metadata_files:
             if args.verbose:
                 meta_parser(metadata_files)
-            file_parser(directory, "google.txt", metadata_files)
-            print(f"[+] The results have been saved in the file google.txt (see the directory {directory})")
+            file_parser(directory, "metadata_google.txt", metadata_files)
+            print(f"[+] The results have been saved in the file {directory}/metadata_google.txt")
+        else:
+            print("[-] No metadata found...")
     else:
         print("[-] There is nothing to analyze. Closing...")
         
