@@ -3,3 +3,4 @@ pypdf2
 beautifulsoup4
 openpyxl
 wget
+python-docx
