@@ -28,8 +28,13 @@
 ## Usage 
 
 ```
-python3 metafinder.py -t domain.com -l 20
+python3 metafinder.py -t domain.com -l 20 [-v]
 ```
+
+Parameters:
+* t: Specifies the target domain.
+* l: Specify the maximum number of results to be searched.
+* v: Optional. It is used to display the results on the screen as well.
 
 # Author
 
