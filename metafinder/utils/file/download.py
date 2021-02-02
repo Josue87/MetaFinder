@@ -1,7 +1,7 @@
 from time import sleep
 from os import system, sep
 import wget
-from utils.file.metadata import extract_metadata
+from metafinder.utils.file.metadata import extract_metadata
 
 # Disable warning by SSL certificate
 import ssl
