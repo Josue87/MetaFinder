@@ -32,12 +32,13 @@ Upgrades are also available using:
 ## Usage 
 
 ```
-metafinder -t domain.com -l 20 [-v]
+metafinder -t domain.com -l 20 -o folder [-v] 
 ```
 
 Parameters:
 * t: Specifies the target domain.
 * l: Specify the maximum number of results to be searched.
+* o: Specify the path to save the report.
 * v: Optional. It is used to display the results on the screen as well.
 
 # Author

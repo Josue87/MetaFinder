@@ -8,7 +8,8 @@ __pycache__/
 # Results folder
 results/
 
-
+dist/
+build/
 
 # Pyre type checker
 .pyre/

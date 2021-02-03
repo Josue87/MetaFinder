@@ -14,7 +14,7 @@ def main(argv=None):
     """
     parser = argparse.ArgumentParser()
     parser.add_argument('-t','--target', help="Target to search",required=True)
-    parser.add_argument('-o','--output', help="Folder where the results will be stored",required=False, default="results")
+    parser.add_argument('-o','--output', help="Folder where the results will be stored",required=True, default="results")
     parser.add_argument('-l','--limit', help="Limit of documents to search", type=int, required=True)
     parser.add_argument('-v','--verbose', help="Show results in terminal", action='store_true')
     args = parser.parse_args()
