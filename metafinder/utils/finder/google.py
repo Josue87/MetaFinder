@@ -8,7 +8,7 @@ def search(target, total):
 	documents = []
 	user_agent = {'User-agent': 'Mozilla/5.0 (Linux; Android 10; SM-A205U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.86 Mobile Safari/537.36'}
 	## Check https://github.com/n4xh4ck5/RastLeak - thanks Nacho
-	url = f"https://www.google.com/search?q=(ext:pdf OR ext:doc OR ext:docx OR ext:xls OR ext:xlsx OR ext:ppt OR ext:pptx)+site:*.{target}&filter=0&num={total+1}"
+	url = f"https://www.google.com/search?q=(ext:pdf OR ext:doc OR ext:docx OR ext:xls OR ext:xlsx OR ext:ppt OR ext:pptx)+(site:*.{target} OR site:{target})&filter=0&num={total+1}"
 	try:
 		response = requests.get(url, headers=user_agent)
 		text = response.text

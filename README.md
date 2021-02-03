@@ -47,6 +47,12 @@ This project has been developed by:
 * **Josué Encinar García** -- [@JosueEncinar](https://twitter.com/JosueEncinar)
 
 
+# Contributors
+
+
+* **Félix Brezo Fernández** -- [@febrezo](https://twitter.com/febrezo)
+
+
 # Disclaimer!
 
 This Software has been developed for teaching purposes and for use with permission of a potential target. The author is not responsible for any illegitimate use.
