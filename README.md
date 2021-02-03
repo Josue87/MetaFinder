@@ -20,15 +20,19 @@
 ## Installing dependencies:
 
 ```
-> git clone https://github.com/Josue87/MetaFinder.git
-> cd MetaFinder
-> pip3 install -r requirements.txt
+> pip3 install metafinder
+```
+
+Upgrades are also available using:
+
+```
+> pip3 install metafinder --upgrade
 ```
 
 ## Usage 
 
 ```
-python3 metafinder.py -t domain.com -l 20 [-v]
+metafinder -t domain.com -l 20 [-v]
 ```
 
 Parameters:
