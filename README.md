@@ -13,7 +13,7 @@
         
 |_ Author: @JosueEncinar
 |_ Description: Search for documents in a domain through Google. The objective is to extract metadata
-|_ Usage: python3 metafinder.py -t domain.com -l 100
+|_ Usage: python3 metafinder.py -d domain.com -l 100 -o /tmp
 
 ```
 
@@ -31,16 +31,39 @@ Upgrades are also available using:
 
 ## Usage 
 
+### CLI
 ```
-metafinder -t domain.com -l 20 -o folder [-v] 
+metafinder -d domain.com -l 20 -o folder [-t 10] [-v] 
 ```
 
 Parameters:
-* t: Specifies the target domain.
+* d: Specifies the target domain.
 * l: Specify the maximum number of results to be searched.
 * o: Specify the path to save the report.
+* t: Optional. Used to configure the threads (4 by default).
 * v: Optional. It is used to display the results on the screen as well.
 
+### In Code
+```
+import metafinder.extractor as metadata_extractor
+
+documents_limit = 5
+domain = "target_domain"
+data = metadata_extractor.extract_metadata_from_google_search(domain, documents_limit)
+for k,v in data.items():
+    print(f"{k}:")
+    print(f"|_ URL: {v['url']}")
+    for metadata,value in v['metadata'].items():
+        print(f"|__ {metadata}: {value}")
+
+document_name = "test.pdf")
+try:
+    metadata_file = metadata_extractor.extract_metadata_from_document(document_name)
+    for k,v in metadata_file.items():
+        print(f"{k}: {v}")
+except FileNotFoundError:
+    print("File not found")
+```
 # Author
 
 This project has been developed by:

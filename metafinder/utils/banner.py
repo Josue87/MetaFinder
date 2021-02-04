@@ -9,8 +9,8 @@ banner = """
 
 author = "@JosueEncinar"
 description = "Search for documents in a domain through Google. The objective is to extract metadata"
-version = "1.0-beta"
-usage_example = "metafinder -t domain.com -l 100"
+version = "0.1.5-beta"
+usage_example = "metafinder -d domain.com -l 100 -o /tmp"
 
 
 def show_banner():

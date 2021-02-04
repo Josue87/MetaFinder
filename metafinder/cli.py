@@ -1,5 +1,6 @@
 import argparse
-from os import sep, system
+from os import sep, listdir, remove
+import os.path
 from pathlib import Path
 
 from metafinder.utils.banner import show_banner
@@ -13,21 +14,31 @@ def main(argv=None):
        argv (list): The list of parameters passed.
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument('-t','--target', help="Target to search",required=True)
+    parser.add_argument('-d','--domain', help="Domain to search",required=True)
     parser.add_argument('-o','--output', help="Folder where the results will be stored",required=True, default="results")
     parser.add_argument('-l','--limit', help="Limit of documents to search", type=int, required=True)
+    parser.add_argument('-t','--threads', help="Number of threads for downloading documents", type=int, default=4)
     parser.add_argument('-v','--verbose', help="Show results in terminal", action='store_true')
     args = parser.parse_args()
     show_banner()
-    directory = Path(args.output) / args.target
+    directory = Path(args.output) / args.domain
     directory.mkdir(parents=True, exist_ok=True)
 
     try:
-        processing(args.target, args.limit, args.verbose, str(directory))
+        processing(args.domain, args.limit, args.verbose, str(directory), args.threads)
     except KeyboardInterrupt:
         print("[-] MetaFinder has been interrupted. Deleting files.")
-        system(f'rm {directory}/*')
-        system('find . -name "*.tmp" -type f -delete')
+        try:
+            for f in listdir(directory):
+                remove(os.path.join(directory, f))
+        except:
+            pass
+        try:
+            for f in listdir("."):
+                if f.endswith(".tmp"):
+                    remove(os.path.join(directory, f))
+        except:
+            pass
         print("Bye.")
 
 
