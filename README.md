@@ -56,7 +56,7 @@ for k,v in data.items():
     for metadata,value in v['metadata'].items():
         print(f"|__ {metadata}: {value}")
 
-document_name = "test.pdf")
+document_name = "test.pdf"
 try:
     metadata_file = metadata_extractor.extract_metadata_from_document(document_name)
     for k,v in metadata_file.items():
