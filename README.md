@@ -17,7 +17,7 @@
 
 ```
 
-## Installing dependencies:
+## Installation:
 
 ```
 > pip3 install metafinder

@@ -8,7 +8,7 @@ def meta_parser(metadata):
         print("-"* len(key))
         print(f"URL: {value['url']}")
         for v in value["metadata"]:
-            if value["metadata"][v]:
+            if value["metadata"][v] is not None:
                 print(f'|_ {v}: {value["metadata"][v]}')
 
 
@@ -21,7 +21,7 @@ def file_parser(directory, name, metadata):
             output.write("-"* len(key) + "\n")
             output.write(f"URL: {value['url']}\n")
             for v in value["metadata"]:
-                if value["metadata"][v]:
+                if value["metadata"][v] is not None:
                     output.write(f'|_ {v}: {value["metadata"][v]}\n')
 
             
