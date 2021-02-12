@@ -6,8 +6,8 @@ import metafinder
 
 long_description = """|Supported Python versions| |License|
 
-**MetaFinder - Metadata search through Google**
-===============================================
+**MetaFinder - Metadata search through Search Engines**
+=======================================================
 
 ::
 
@@ -19,8 +19,8 @@ long_description = """|Supported Python versions| |License|
             \/       \/               \/       \/               \/       \/       \/          
             
     |_ Author: @JosueEncinar
-    |_ Description: Search for documents in a domain through Google. The objective is to extract metadata
-    |_ Usage: python3 metafinder.py -d domain.com -l 100 -o /tmp
+    |_ Description: Search for documents in a domain through Search Engines. The objective is to extract metadata
+    |_ Usage: metafinder -d domain.com -l 50 -o /tmp -go -bi
 
 Installation:
 -------------
@@ -43,12 +43,18 @@ CLI
 
 ::
 
-    metafinder -d domain.com -l 20 -o folder [-t 10] [-v] 
+    metafinder -d domain.com -l 20 -o folder [-t 10] [-v] -g 
 
-Parameters: \* d: Specifies the target domain. \* l: Specify the maximum
-number of results to be searched. \* o: Specify the path to save the
-report. \* t: Optional. Used to configure the threads (4 by default). \*
-v: Optional. It is used to display the results on the screen as well.
+Parameters: 
+
+-  d: Specifies the target domain. 
+-  l: Specify the maximum number of results to be searched. 
+-  o: Specify the path to save the report. 
+-  t: Optional. Used to configure the threads (4 by default). 
+-  v: Optional. It is used to display the results on the screen as well. 
+-  go: Optional. Search in Google. (Default) 
+-  bi: Optional. Search in Bing. 
+-  ba: Optional. Search in Baidu.
 
 In Code
 ~~~~~~~
@@ -60,6 +66,8 @@ In Code
     documents_limit = 5
     domain = "target_domain"
     data = metadata_extractor.extract_metadata_from_google_search(domain, documents_limit)
+    # data = metadata_extractor.extract_metadata_from_bing_search(domain, documents_limit)
+    # data = metadata_extractor.extract_metadata_from_baidu_search(domain, documents_limit)
     for k,v in data.items():
         print(f"{k}:")
         print(f"|_ URL: {v['url']}")
@@ -79,19 +87,17 @@ Author
 
 This project has been developed by:
 
--  **Josué Encinar García** --
-   [@JosueEncinar](https://twitter.com/JosueEncinar)
+-  **Josué Encinar García** -- https://twitter.com/JosueEncinar
 
 Contributors
 ============
 
--  **Félix Brezo Fernández** -- [@febrezo](https://twitter.com/febrezo)
+-  **Félix Brezo Fernández** -- https://twitter.com/febrezo
 
 Disclaimer!
 ===========
 
-This Software has been developed for teaching purposes and for use with
-permission of a potential target. The author is not responsible for any
+The software is designed to leave no trace in the documents we upload to a domain. The author is not responsible for any
 illegitimate use.
 
 .. |Supported Python versions| image:: https://img.shields.io/badge/python-3.6+-blue.svg?style=flat-square&logo=python
@@ -122,6 +128,8 @@ setup(
         "openpyxl",
         "wget",
         "python-docx",
-        "python-pptx"
+        "python-pptx",
+        "prompt_toolkit",
+        "urllib3"
     ]
 )

@@ -1,3 +1,6 @@
+from metafinder import __version__
+
+
 banner = """
    _____               __             ___________ .__               .___                   
   /     \     ____   _/  |_  _____    \_   _____/ |__|   ____     __| _/   ____   _______  
@@ -8,15 +11,14 @@ banner = """
         """
 
 author = "@JosueEncinar"
-description = "Search for documents in a domain through Google. The objective is to extract metadata"
-version = "0.1.5-beta"
-usage_example = "metafinder -d domain.com -l 100 -o /tmp"
+description = "Search for documents in a domain through Search Engines. The objective is to extract metadata"
+usage_example = "metafinder -d domain.com -l 50 -o /tmp -go -bi"
 
 
 def show_banner():
     print(banner)
     print(f"|_ Author: {author}")
     print(f"|_ Description: {description}")
-    print(f"|_ Version: {version}")
+    print(f"|_ Version: {__version__}")
     print(f"|_ Usage: {usage_example}")
     print("")

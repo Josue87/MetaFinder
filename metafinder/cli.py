@@ -16,16 +16,34 @@ def main(argv=None):
     parser = argparse.ArgumentParser()
     parser.add_argument('-d','--domain', help="Domain to search",required=True)
     parser.add_argument('-o','--output', help="Folder where the results will be stored",required=True, default="results")
-    parser.add_argument('-l','--limit', help="Limit of documents to search", type=int, required=True)
+    parser.add_argument('-l','--limit', help="Limit of documents to search in the searchs engines (max 250)", type=int, required=True)
     parser.add_argument('-t','--threads', help="Number of threads for downloading documents", type=int, default=4)
     parser.add_argument('-v','--verbose', help="Show results in terminal", action='store_true')
+    parser.add_argument('-go','--google', help="Search in Google", action='store_true', default=False)
+    parser.add_argument('-bi','--bing', help="Search in Bing", action='store_true', default=False)
+    parser.add_argument('-ba','--baidu', help="Search in Baidu", action='store_true', default=False)
     args = parser.parse_args()
     show_banner()
     directory = Path(args.output) / args.domain
     directory.mkdir(parents=True, exist_ok=True)
+    search_engines = {
+        "google": args.google,
+        "bing": args.bing,
+        "baidu": args.baidu
+    }
+    some_election = False
+    for k,v in search_engines.items():
+        if v:
+            some_election = True
+            break
+    
+    if not some_election:
+        search_engines["google"] = True
+
+    limit = 250 if args.limit > 250 else args.limit # max 250
 
     try:
-        processing(args.domain, args.limit, args.verbose, str(directory), args.threads)
+        processing(args.domain, limit, args.verbose, str(directory), args.threads, search_engines)
     except KeyboardInterrupt:
         print("[-] MetaFinder has been interrupted. Deleting files.")
         try:

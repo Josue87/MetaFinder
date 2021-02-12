@@ -1,30 +1,47 @@
 import requests
 from bs4 import BeautifulSoup
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
+from random import randint
 from metafinder.utils.exception import GoogleCaptcha
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+from metafinder.utils.agent import user_agent
+import urllib3
+urllib3.disable_warnings()
 
 
 def search(target, total):
 	documents = []
-	user_agent = {'User-agent': 'Mozilla/5.0 (Linux; Android 10; SM-A205U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.86 Mobile Safari/537.36'}
+	start = 0
+	num = 50 if total > 50 else total
+	iterations = int(total/50)
+	if (total%50) != 0:
+		iterations += 1
 	## Check https://github.com/n4xh4ck5/RastLeak - thanks Nacho
-	url = f"https://www.google.com/search?q=(ext:pdf OR ext:doc OR ext:docx OR ext:xls OR ext:xlsx OR ext:ppt OR ext:pptx)+(site:*.{target} OR site:{target})&filter=0&num={total}"
-	try:
-		response = requests.get(url, headers=user_agent)
-		text = response.text
-		soup = BeautifulSoup(text, "html.parser")
-		if text.find("detected unusual traffic") != -1:
-			raise GoogleCaptcha()
-		all_links = soup.find_all("a")
-
-		for link in all_links:
-			href = link.get("href", None)
-			if href and target in href and \
-			(href.endswith("pdf") or href.endswith("doc") or href.endswith("docx") or href.endswith("ppt") or href.endswith("pptx") or href.endswith("xls") or href.endswith("xlsx")) \
-			and href not in documents:
-				documents.append(href)
-	except Exception as ex:
-		#It's left over... but it stays there
-		raise ex
+	url_base = f"https://www.google.com/search?q=(ext:pdf OR ext:doc OR ext:docx OR ext:xls OR ext:xlsx OR ext:ppt OR ext:pptx)+(site:*.{target} OR site:{target})&num={num}"
+	while (start < iterations) and (len(documents) < total):
+		try:
+			url = url_base + "&start={start}"
+			response = requests.get(url, headers={'User-agent': 'APIs-Google (+https://developers.google.com/webmasters/APIs-Google.html)'})
+			text = response.text
+			if "detected unusual traffic" in text:
+				raise GoogleCaptcha()
+			soup = BeautifulSoup(text, "html.parser")
+			all_links = soup.find_all("a")
+			follow = False
+			for link in all_links:
+				href = link.get("href", None)
+				if href and target in href and "google" not in href:
+					try:
+						href = "http" + href.split("=http")[1]
+						href = href.split("&sa=U&")[0]
+						follow = True
+						if href not in documents:
+							documents.append(href)
+							if len(documents) >= total:
+								break
+					except:
+						continue
+			if not follow:
+				break
+		except Exception as ex:
+			raise ex #It's left over... but it stays there
+		start += 1
 	return documents	
