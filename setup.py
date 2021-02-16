@@ -43,7 +43,7 @@ CLI
 
 ::
 
-    metafinder -d domain.com -l 20 -o folder [-t 10] [-v] -g 
+    metafinder -d domain.com -l 20 -o folder [-t 10] [-v] -go -bi -ba 
 
 Parameters: 
 
@@ -54,7 +54,7 @@ Parameters:
 -  v: Optional. It is used to display the results on the screen as well. 
 -  go: Optional. Search in Google. (Default) 
 -  bi: Optional. Search in Bing. 
--  ba: Optional. Search in Baidu.
+-  ba: Optional. Search in Baidu. (Experimental)
 
 In Code
 ~~~~~~~
@@ -109,7 +109,7 @@ setup(
     name='metafinder',
     version=metafinder.__version__,
     author='Josue Encinar (@JosueEncinar)',
-    description='MetaFinder - Metadata search through Google',
+    description='MetaFinder - Metadata search through Search Engines',
     include_package_data=True,
     license='GNU GPLv3+',
     packages=find_packages(),

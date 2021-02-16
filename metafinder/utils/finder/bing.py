@@ -5,16 +5,17 @@ from random import randint
 from metafinder.utils.agent import user_agent
 
 def search(target, total):
+	bing_count = 25
 	documents = []
-	url = f"https://www.bing.com/search?q=site:{target}+(filetype:pdf+OR+filetype:doc+OR%20filetype:docx+OR+filetype:xls+OR+filetype:xlsx+OR+filetype:ppt+OR+filetype:pptx)&count=5"
+	url = f"https://www.bing.com/search?q=site:{target}+(filetype:pdf+OR+filetype:doc+OR%20filetype:docx+OR+filetype:xls+OR+filetype:xlsx+OR+filetype:ppt+OR+filetype:pptx)&count={bing_count}"
 	try:
 		count = 0
-		iter_count = int(total/5)
-		if (total%5) != 0:
+		iter_count = int(total/bing_count)
+		if (total%bing_count) != 0:
 			iter_count +=1
-		while (count < iter_count) or (len(documents) < total):
-			this_count = count*5 +1
-			new_url = url + f"&first={this_count}"
+		while (count < iter_count) and (len(documents) < total):
+			this_count = count*bing_count + 1
+			new_url = url + f"&first={this_count}&FORM=PERE"
 			req = Request(new_url, headers={"User-Agent": user_agent.get(randint(0, len(user_agent)-1))["User-agent"]})
 			page = urlopen(req)
 			soup = BeautifulSoup(page.read(), "html.parser")
@@ -28,6 +29,6 @@ def search(target, total):
 					if len(documents) >= total:
 						break
 			count += 1
-	except Exception as ex:
-		raise ex #It's left over... but it stays there
+	except Exception as e:
+		pass
 	return documents	

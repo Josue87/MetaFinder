@@ -4,15 +4,25 @@ from time import sleep
 from random import randint
 from metafinder.utils.exception import BaiduDetection
 from metafinder.utils.agent import user_agent
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import urllib3
 urllib3.disable_warnings()
 
+def _get_link(baidu_link):
+	location = None
+	try:
+		resp = requests.get(baidu_link, timeout=3, allow_redirects=False)
+		location = resp.headers.get("Location", None) # Get redirection (Real link)
+	except:
+		pass
+	return location
 
 def search(target, total):
+	num_results = 50 if total >= 50 else total
 	documents = []
 	base_url = "https://www.baidu.com/s?ie=utf-8"
-	total_loop = int(total/10)
-	if (total%10) != 0:
+	total_loop = int(total/num_results)
+	if (total%num_results) != 0:
 		total_loop += 1
 	count = 1
 	old_useragent = -1
@@ -23,7 +33,7 @@ def search(target, total):
 			if next_useragent != old_useragent:
 				break
 		old_useragent = next_useragent
-		new_url = base_url + f"&pn={count*10}&wd=(site:{target}+|+site:*.{target})+filetype:pdf"
+		new_url = base_url + f"&pn={count*num_results}&wd=(site:{target}+|+site:*.{target})+filetype:pdf&rn={num_results}"
 		try:
 			new_agent = user_agent.get(count, next_useragent)
 			response = requests.get(new_url, headers=new_agent)
@@ -45,13 +55,14 @@ def search(target, total):
 		except Exception as ex:
 			raise ex #It's left over... but it stays there
 		count += 1
-		return_documents = []
-		for d in documents:
-			resp = requests.get(d, allow_redirects=False)
+	return_documents = []
+	with ThreadPoolExecutor(max_workers=6) as executor:
+		future_download = {executor.submit(_get_link, url): url for url in documents}
+		for future in as_completed(future_download):
 			try:
-				location = resp.headers.get("Location", None) # Get redirection (Real link)
-				if location and location not in return_documents:
-					return_documents.append(location)
+				data = future.result()
+				if data and data not in return_documents:
+					return_documents.append(data)
 			except:
 				pass
 	return return_documents	

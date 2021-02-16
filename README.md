@@ -33,7 +33,7 @@ Upgrades are also available using:
 
 ### CLI
 ```
-metafinder -d domain.com -l 20 -o folder [-t 10] [-v] -go
+metafinder -d domain.com -l 20 -o folder [-t 10] [-v] -go -bi -ba
 ```
 
 Parameters:
@@ -45,7 +45,7 @@ Parameters:
 * Search Engines to select (Google by default):
   * go: Optional. Search in Google.
   * bi: Optional. Search in Bing.
-  * ba: Optional. Search in Baidu.
+  * ba: Optional. Search in Baidu. (Experimental)
 
 ### In Code
 ```
