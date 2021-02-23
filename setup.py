@@ -43,7 +43,7 @@ CLI
 
 ::
 
-    metafinder -d domain.com -l 20 -o folder [-t 10] [-v] -go -bi -ba 
+    metafinder -d domain.com -l 20 -o folder [-t 10] -go -bi -ba 
 
 Parameters: 
 
@@ -51,7 +51,7 @@ Parameters:
 -  l: Specify the maximum number of results to be searched. 
 -  o: Specify the path to save the report. 
 -  t: Optional. Used to configure the threads (4 by default). 
--  v: Optional. It is used to display the results on the screen as well. 
+-  v: Show Metafinder version.
 -  go: Optional. Search in Google. (Default) 
 -  bi: Optional. Search in Bing. 
 -  ba: Optional. Search in Baidu. (Experimental)
@@ -65,10 +65,12 @@ In Code
 
     documents_limit = 5
     domain = "target_domain"
-    data = metadata_extractor.extract_metadata_from_google_search(domain, documents_limit)
-    # data = metadata_extractor.extract_metadata_from_bing_search(domain, documents_limit)
-    # data = metadata_extractor.extract_metadata_from_baidu_search(domain, documents_limit)
-    for k,v in data.items():
+    result = metadata_extractor.extract_metadata_from_google_search(domain, documents_limit)
+    # result = metadata_extractor.extract_metadata_from_bing_search(domain, documents_limit)
+    # result = metadata_extractor.extract_metadata_from_baidu_search(domain, documents_limit)
+    authors = result.get_authors()
+    software = result.get_software()
+    for k,v in result.get_metadata().items():
         print(f"{k}:")
         print(f"|_ URL: {v['url']}")
         for metadata,value in v['metadata'].items():
@@ -122,14 +124,13 @@ setup(
         ],
     },
     install_requires=[
-        "requests",
-        "pikepdf",
-        "beautifulsoup4",
-        "openpyxl",
-        "wget",
-        "python-docx",
-        "python-pptx",
-        "prompt_toolkit",
-        "urllib3"
+        "requests==2.25.1",
+        "pikepdf==2.5.2",
+        "beautifulsoup4==4.9.3",
+        "openpyxl==3.0.5",
+        "python-docx==0.8.6",
+        "python-pptx==0.6.18",
+        "prompt-toolkit==3.0.5",
+        "urllib3==1.26.3"
     ]
 )

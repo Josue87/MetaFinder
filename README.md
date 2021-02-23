@@ -33,7 +33,7 @@ Upgrades are also available using:
 
 ### CLI
 ```
-metafinder -d domain.com -l 20 -o folder [-t 10] [-v] -go -bi -ba
+metafinder -d domain.com -l 20 -o folder [-t 10] -go -bi -ba
 ```
 
 Parameters:
@@ -41,7 +41,7 @@ Parameters:
 * l: Specify the maximum number of results to be searched in the searchs engines.
 * o: Specify the path to save the report.
 * t: Optional. Used to configure the threads (4 by default).
-* v: Optional. It is used to display the results on the screen as well.
+* v: Show Metafinder version.
 * Search Engines to select (Google by default):
   * go: Optional. Search in Google.
   * bi: Optional. Search in Bing.
@@ -53,10 +53,12 @@ import metafinder.extractor as metadata_extractor
 
 documents_limit = 5
 domain = "target_domain"
-data = metadata_extractor.extract_metadata_from_google_search(domain, documents_limit)
-# data = metadata_extractor.extract_metadata_from_bing_search(domain, documents_limit)
-# data = metadata_extractor.extract_metadata_from_baidu_search(domain, documents_limit)
-for k,v in data.items():
+result = metadata_extractor.extract_metadata_from_google_search(domain, documents_limit)
+# result = metadata_extractor.extract_metadata_from_bing_search(domain, documents_limit)
+# result = metadata_extractor.extract_metadata_from_baidu_search(domain, documents_limit)
+authors = result.get_authors()
+software = result.get_software()
+for k,v in result.get_metadata().items():
     print(f"{k}:")
     print(f"|_ URL: {v['url']}")
     for metadata,value in v['metadata'].items():

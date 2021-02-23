@@ -1,15 +1,11 @@
 from os import sep
 
 
-def meta_parser(metadata):
-    for key, value in metadata.items():
-        print("\n")
-        print(key)
-        print("-"* len(key))
-        print(f"URL: {value['url']}")
-        for v in value["metadata"]:
-            if value["metadata"][v] is not None:
-                print(f'|_ {v}: {value["metadata"][v]}')
+def file_parser_list(directory, name, data):
+    file_name = directory + sep + name
+    with open(file_name, "w") as output:
+        for d in data:
+            output.write(f'{d}\n')
 
 
 def file_parser(directory, name, metadata):

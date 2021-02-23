@@ -5,10 +5,8 @@ from pptx import Presentation
 from datetime import datetime
 
 
-def extract_doc(document):
+def _get_properties(prop):
     metadata = {}
-    doc = Document(document)
-    prop = doc.core_properties
     metadata["Author"] = prop.author
     metadata["Comments"] = prop.comments
     metadata["Created"] = str(prop.created)
@@ -17,7 +15,11 @@ def extract_doc(document):
     metadata["Modified"] = str(prop.modified)
     metadata["Subject"] = prop.subject
     metadata["Title"] = prop.title
-    return metadata
+
+def extract_doc(document):
+    doc = Document(document)
+    prop = doc.core_properties
+    return _get_properties(prop)
 
 def extract_pdf(document):
     metadata = {}
@@ -36,32 +38,14 @@ def extract_pdf(document):
 
 
 def extract_xls(document):
-    metadata = {}
     wb = load_workbook(document)
     prop = wb.properties
-    metadata["Author"] = prop.creator
-    metadata["Comments"] = prop.description
-    metadata["Created"] = str(prop.created)
-    metadata["Identifier"] = prop.identifier
-    metadata["Keywords"] = prop.keywords
-    metadata["Modified"] = str(prop.modified)
-    metadata["Subject"] = prop.subject
-    metadata["Title"] = prop.title
-    return metadata
+    return _get_properties(prop)
 
 def extract_ppt(document):
-    metadata = {}
     pptx_presentation = Presentation(document)
     prop = pptx_presentation.core_properties
-    metadata["Author"] = prop.author
-    metadata["Comments"] = prop.comments
-    metadata["Created"] = str(prop.created)
-    metadata["Identifier"] = prop.identifier
-    metadata["Keywords"] = prop.keywords
-    metadata["Modified"] = str(prop.modified)
-    metadata["Subject"] = prop.subject
-    metadata["Title"] = prop.title
-    return metadata
+    return _get_properties(prop)
 
 
 def remove_indirect_object(metadata):

@@ -18,8 +18,10 @@ def search(target, total):
 	url_base = f"https://www.google.com/search?q=(ext:pdf OR ext:doc OR ext:docx OR ext:xls OR ext:xlsx OR ext:ppt OR ext:pptx)+(site:*.{target} OR site:{target})&num={num}"
 	while (start < iterations) and (len(documents) < total):
 		try:
-			url = url_base + "&start={start}"
-			response = requests.get(url, headers={'User-agent': 'APIs-Google (+https://developers.google.com/webmasters/APIs-Google.html)'})
+			url = url_base + f"&start={start}"
+			response = requests.get(url, 
+			headers={'User-agent': 'APIs-Google (+https://developers.google.com/webmasters/APIs-Google.html)'},
+			timeout=5)
 			text = response.text
 			if "detected unusual traffic" in text:
 				raise GoogleCaptcha()

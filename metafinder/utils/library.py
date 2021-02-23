@@ -6,6 +6,7 @@ from metafinder.utils.finder import bing
 from metafinder.utils.finder import baidu
 from metafinder.utils.file.download import download_file
 from metafinder.utils.file.metadata import extract_metadata
+from metafinder.utils.result import Result
 
 
 def extract_metadata_from_google_search(domain, limit=50, threads=4):
@@ -21,7 +22,7 @@ def extract_metadata_from_google_search(domain, limit=50, threads=4):
         Exception: If there is an error
 
     Returns:
-        dict: A json with metadata
+        dict: Result object
     """
     links = google.search(domain, limit)
     directory = tempfile.TemporaryDirectory()
@@ -29,7 +30,7 @@ def extract_metadata_from_google_search(domain, limit=50, threads=4):
     if len(links) > 0:
         metadata_files = download_file(links, directory.name, threads, False)
     directory.cleanup()
-    return metadata_files
+    return Result(metadata_files)
 
 def extract_metadata_from_bing_search(domain, limit=50, threads=4):
     """Search metadata in files through Bing
@@ -43,7 +44,7 @@ def extract_metadata_from_bing_search(domain, limit=50, threads=4):
         Exception: If there is an error
 
     Returns:
-        dict: A json with metadata
+        dict: Result object
     """
     links = bing.search(domain, limit)
     directory = tempfile.TemporaryDirectory()
@@ -51,7 +52,7 @@ def extract_metadata_from_bing_search(domain, limit=50, threads=4):
     if len(links) > 0:
         metadata_files = download_file(links, directory.name, threads, False)
     directory.cleanup()
-    return metadata_files
+    return Result(metadata_files)
 
 def extract_metadata_from_baidu_search(domain, limit=50, threads=2):
     """Search metadata in PDF files through Baidu (slow method)
@@ -66,7 +67,7 @@ def extract_metadata_from_baidu_search(domain, limit=50, threads=2):
         Exception: If there is an error
 
     Returns:
-        dict: A json with metadata
+        dict: Result object
     """
     links = baidu.search(domain, limit)
     directory = tempfile.TemporaryDirectory()
@@ -74,7 +75,7 @@ def extract_metadata_from_baidu_search(domain, limit=50, threads=2):
     if len(links) > 0:
         metadata_files = download_file(links, directory.name, threads, False)
     directory.cleanup()
-    return metadata_files
+    return Result(metadata_files)
 
 def extract_metadata_from_document(document):
     """Search metadata in a document

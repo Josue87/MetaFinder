@@ -2,9 +2,9 @@ import argparse
 from os import sep, listdir, remove
 import os.path
 from pathlib import Path
-
 from metafinder.utils.banner import show_banner
 from metafinder.core import processing
+from metafinder import __version__
 
 
 def main(argv=None):
@@ -18,10 +18,11 @@ def main(argv=None):
     parser.add_argument('-o','--output', help="Folder where the results will be stored",required=True, default="results")
     parser.add_argument('-l','--limit', help="Limit of documents to search in the searchs engines (max 250)", type=int, required=True)
     parser.add_argument('-t','--threads', help="Number of threads for downloading documents", type=int, default=4)
-    parser.add_argument('-v','--verbose', help="Show results in terminal", action='store_true')
     parser.add_argument('-go','--google', help="Search in Google", action='store_true', default=False)
     parser.add_argument('-bi','--bing', help="Search in Bing", action='store_true', default=False)
     parser.add_argument('-ba','--baidu', help="Search in Baidu", action='store_true', default=False)
+    parser.add_argument('-v','--version', help="Show Metafinder version", action='version', version=__version__)
+
     args = parser.parse_args()
     show_banner()
     directory = Path(args.output) / args.domain
@@ -43,7 +44,7 @@ def main(argv=None):
     limit = 250 if args.limit > 250 else args.limit # max 250
 
     try:
-        processing(args.domain, limit, args.verbose, str(directory), args.threads, search_engines)
+        processing(args.domain, limit, str(directory), args.threads, search_engines)
     except KeyboardInterrupt:
         print("[-] MetaFinder has been interrupted. Deleting files.")
         try:

@@ -11,7 +11,7 @@ urllib3.disable_warnings()
 def _get_link(baidu_link):
 	location = None
 	try:
-		resp = requests.get(baidu_link, timeout=3, allow_redirects=False)
+		resp = requests.get(baidu_link, timeout=5, allow_redirects=False)
 		location = resp.headers.get("Location", None) # Get redirection (Real link)
 	except:
 		pass
@@ -36,7 +36,7 @@ def search(target, total):
 		new_url = base_url + f"&pn={count*num_results}&wd=(site:{target}+|+site:*.{target})+filetype:pdf&rn={num_results}"
 		try:
 			new_agent = user_agent.get(count, next_useragent)
-			response = requests.get(new_url, headers=new_agent)
+			response = requests.get(new_url, headers=new_agent, timeout=5)
 			text = response.text
 			if "timeout-button" in text:
 				total_timeout += 1
