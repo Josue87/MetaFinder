@@ -5,9 +5,10 @@ from metafinder.utils.file.download import download_file
 from metafinder.utils.file.parser import file_parser_list, file_parser
 from metafinder.utils.color_print import print_error, print_ok
 from metafinder.utils.result import Result
+from metafinder.utils.var_data import * 
 
 
-def processing(target, limit, directory, threads, search_engines):
+def _get_links(target, limit, directory, threads, search_engines):
     links = []
     search_engines_methods = {
         "google": google.search,
@@ -20,14 +21,30 @@ def processing(target, limit, directory, threads, search_engines):
             print(f"Searching in {engine}")
             try:
                 aux_links = search_engines_methods[engine](target, limit)
-                for link in aux_links:
-                    if link not in links:
-                        links.append(link)
+                for link_to_check in aux_links:
+                    exist = False
+                    i = 0
+                    for exist_link in links:
+                        if link_to_check == exist_link[CONST_URL]:
+                            exist = True
+                            links[i][CONST_SEARCH_ENGINES].append(engine)
+                            break
+                        i += 1
+
+                    if not exist:
+                        links.append({
+                            CONST_SEARCH_ENGINES: [engine],
+                            CONST_URL: link_to_check})
                 print_ok("Done", end="\n")
             except KeyboardInterrupt:
                 print(f"{engine} interrupted\n")
             except Exception as ex:
                  print_error(f"{engine} error {ex}", end="\n")
+    return links
+
+
+def processing(target, limit, directory, threads, search_engines):
+    links = _get_links(target, limit, directory, threads, search_engines)
     total_links = len(links)
     links_msg = f"Total files to be analyzed: {total_links}"
     print(links_msg)

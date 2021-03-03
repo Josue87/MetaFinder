@@ -33,7 +33,7 @@ def extract_pdf(document):
                     data = str(datetime.strptime(d,"%Y%m%d%H%M%S"))
                 except:
                     pass
-            metadata[meta[1:]] = data
+            metadata[meta[1:]] = data # [1:] avoid first element '/'
     return metadata
 
 

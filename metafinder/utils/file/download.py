@@ -7,6 +7,7 @@ from os import sep
 import requests
 from random import randint
 from metafinder.utils.agent import user_agent
+from metafinder.utils.var_data import * 
 
 # Disable warning by SSL certificate
 import ssl
@@ -14,30 +15,31 @@ ssl._create_default_https_context = ssl._create_unverified_context
 from metafinder.utils.color_print import print_error, print_ok
 
 
-def download_document(url, directory, display):
+def download_document(element, directory, display):
 	metadata = {}
+	url = element[CONST_URL]
+	search_engines = element[CONST_SEARCH_ENGINES]
 	try:
 		name = url.split(sep)[-1]
 		file_name = directory + sep + name
-		response = requests.get(url, headers=user_agent.get(randint(0, len(user_agent)-1)), timeout=5)
+		response = requests.get(url, headers=user_agent.get(randint(0, len(user_agent)-1)), timeout=10)
 		s_code = response.status_code
+		data = {}
 		if s_code == 200:
 			with open(file_name, "wb") as f:
 				f.write(response.content)
 			data = extract_metadata(file_name)
-			if data:
-				metadata = {
-					"name": name, 
-					"url": url, 
-					"metadata": data}
 			if display:
 				print_ok(f"Downloaded file {url}")
-		elif s_code == 404 and display:
-			print_error(f"(404) File {url} Not Found")
-		elif s_code == 403 and display:
-			print_error(f"(403) Access to the file {url} is forbidden")
 		elif display:
-			print_error(f"({s_code} {url}")	
+			print_error(f"(Status code: {s_code}) File {url}")
+		
+		metadata = {
+			CONST_NAME: name, 
+			CONST_URL: url, 
+			CONST_METADATA: data,
+			CONST_STATUS_CODE: s_code,
+			CONST_SEARCH_ENGINES: search_engines}
 	except Exception as ex:
 		if display:
 			print_error(f"Error donwloading {url} >> {ex}")
@@ -52,10 +54,9 @@ def download_file(urls_metadata, directory, threads, display=True):
 			try:
 				data = future.result()
 				if data:
-					name = data["name"]
-					metadata_files[name] = {}
-					metadata_files[name]["url"] = data["url"]
-					metadata_files[name]["metadata"] =  data["metadata"]
+					name = data[CONST_NAME]
+					del data[CONST_NAME]
+					metadata_files[name] = data
 			except Exception as ex:
 				if display:
 					print_error(f"Error: {ex}")
