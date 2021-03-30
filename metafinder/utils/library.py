@@ -7,7 +7,17 @@ from metafinder.utils.finder import baidu
 from metafinder.utils.file.download import download_file
 from metafinder.utils.file.metadata import extract_metadata
 from metafinder.utils.result import Result
+from metafinder.utils.var_data import * 
 
+
+def _generate_list(links, search_engine):
+    result = []
+    for link in links:
+        result.append({
+            CONST_URL: link,
+            CONST_SEARCH_ENGINES: [search_engine]
+        })
+    return result
 
 def extract_metadata_from_google_search(domain, limit=50, threads=4):
     """Search metadata in files through Google
@@ -27,10 +37,10 @@ def extract_metadata_from_google_search(domain, limit=50, threads=4):
     links = google.search(domain, limit)
     directory = tempfile.TemporaryDirectory()
     metadata_files = None
-    if len(links) > 0:
-        metadata_files = download_file(links, directory.name, threads, False)
+    if links and len(links) > 0:
+        metadata_files = download_file(_generate_list(links, "Google"), directory.name, threads, False)
     directory.cleanup()
-    return Result(metadata_files)
+    return Result(metadata_files) if metadata_files else None
 
 def extract_metadata_from_bing_search(domain, limit=50, threads=4):
     """Search metadata in files through Bing
@@ -50,9 +60,9 @@ def extract_metadata_from_bing_search(domain, limit=50, threads=4):
     directory = tempfile.TemporaryDirectory()
     metadata_files = None
     if len(links) > 0:
-        metadata_files = download_file(links, directory.name, threads, False)
+        metadata_files = download_file(_generate_list(links, "Bing"), directory.name, threads, False)
     directory.cleanup()
-    return Result(metadata_files)
+    return Result(metadata_files) if metadata_files else None
 
 def extract_metadata_from_baidu_search(domain, limit=50, threads=2):
     """Search metadata in PDF files through Baidu (slow method)
@@ -73,9 +83,9 @@ def extract_metadata_from_baidu_search(domain, limit=50, threads=2):
     directory = tempfile.TemporaryDirectory()
     metadata_files = None
     if len(links) > 0:
-        metadata_files = download_file(links, directory.name, threads, False)
+        metadata_files = download_file(_generate_list(links, "Baidu"), directory.name, threads, False)
     directory.cleanup()
-    return Result(metadata_files)
+    return Result(metadata_files) if metadata_files else None
 
 def extract_metadata_from_document(document):
     """Search metadata in a document

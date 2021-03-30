@@ -33,7 +33,6 @@ def download_document(element, directory, display):
 				print_ok(f"Downloaded file {url}")
 		elif display:
 			print_error(f"(Status code: {s_code}) File {url}")
-		
 		metadata = {
 			CONST_NAME: name, 
 			CONST_URL: url, 
