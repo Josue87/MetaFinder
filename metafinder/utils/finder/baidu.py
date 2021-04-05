@@ -36,7 +36,7 @@ def search(target, total):
 		new_url = base_url + f"&pn={count*num_results}&wd=(site:{target}+|+site:*.{target})+filetype:pdf&rn={num_results}"
 		try:
 			new_agent = user_agent.get(count, next_useragent)
-			response = requests.get(new_url, headers=new_agent, timeout=5)
+			response = requests.get(new_url, headers=new_agent, timeout=5, verify=False)
 			text = response.text
 			if "timeout-button" in text:
 				total_timeout += 1

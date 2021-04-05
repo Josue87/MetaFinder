@@ -21,7 +21,8 @@ def search(target, total):
 			url = url_base + f"&start={start}"
 			response = requests.get(url, 
 			headers={'User-agent': 'APIs-Google (+https://developers.google.com/webmasters/APIs-Google.html)'},
-			timeout=5)
+			timeout=5,
+			verify=False)
 			text = response.text
 			if "detected unusual traffic" in text:
 				raise GoogleCaptcha()
