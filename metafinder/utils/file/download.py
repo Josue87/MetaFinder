@@ -10,8 +10,8 @@ from metafinder.utils.agent import user_agent
 from metafinder.utils.var_data import * 
 
 # Disable warning by SSL certificate
-import ssl
-ssl._create_default_https_context = ssl._create_unverified_context
+import urllib3
+urllib3.disable_warnings()
 from metafinder.utils.color_print import print_error, print_ok
 
 
