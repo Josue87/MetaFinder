@@ -18,4 +18,4 @@ _Screenshots, images and videos showcasing the new feature_
 
 - [ ] I have made corresponding changes to the documentation
 - [ ] I have added tests that prove my fix is effective or that my feature works
-- [ ] I have checked this works in the corresponding browser (STB, MH, Chrome)
+- [ ] I have checked this works with manual QA
