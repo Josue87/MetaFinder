@@ -1,6 +1,7 @@
 import argparse
 from os import sep, listdir, remove
 import os.path
+import sys
 from pathlib import Path
 from metafinder.utils.banner import show_banner
 from metafinder.core import processing
