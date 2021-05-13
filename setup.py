@@ -4,44 +4,26 @@ from os import path
 import metafinder
 
 
-long_description = """|Supported Python versions| |License|
-
+long_description = """
 **MetaFinder - Metadata search through Search Engines**
 =======================================================
-
-::
-
-       _____               __             ___________ .__               .___                   
-      /     \     ____   _/  |_  _____    \_   _____/ |__|   ____     __| _/   ____   _______  
-     /  \ /  \  _/ __ \  \   __\ \__  \    |    __)   |  |  /    \   / __ |  _/ __ \  \_  __ \ 
-    /    Y    \ \  ___/   |  |    / __ \_  |     \    |  | |   |  \ / /_/ |  \  ___/   |  | \/ 
-    \____|__  /  \___  >  |__|   (____  /  \___  /    |__| |___|  / \____ |   \___  >  |__|    
-            \/       \/               \/       \/               \/       \/       \/          
-            
-    |_ Author: @JosueEncinar
-    |_ Description: Search for documents in a domain through Search Engines. The objective is to extract metadata
-    |_ Usage: metafinder -d domain.com -l 50 -o /tmp -go -bi
 
 Installation:
 -------------
 
-::
-
     > pip3 install metafinder
 
 Upgrades are also available using:
-
-::
 
     > pip3 install metafinder --upgrade
 
 Usage
 -----
 
-CLI
-~~~
+MetaFinder can be used in 2 ways:
 
-::
+CLI
+---
 
     metafinder -d domain.com -l 20 -o folder [-t 10] -go -bi -ba 
 
@@ -57,9 +39,7 @@ Parameters:
 -  ba: Optional. Search in Baidu. (Experimental)
 
 In Code
-~~~~~~~
-
-::
+-------
 
     import metafinder.extractor as metadata_extractor
 
@@ -102,8 +82,6 @@ Disclaimer!
 The software is designed to leave no trace in the documents we upload to a domain. The author is not responsible for any
 illegitimate use.
 
-.. |Supported Python versions| image:: https://img.shields.io/badge/python-3.6+-blue.svg?style=flat-square&logo=python
-.. |License| image:: https://img.shields.io/badge/license-GNU-green.svg?style=flat-square&logo=gnu
 
 """
 

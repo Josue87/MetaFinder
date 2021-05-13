@@ -31,6 +31,8 @@ Upgrades are also available using:
 
 ## Usage 
 
+MetaFinder can be used in 2 ways:
+
 ### CLI
 ```
 metafinder -d domain.com -l 20 -o folder [-t 10] -go -bi -ba
