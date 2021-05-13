@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from random import randint
-from metafinder.utils.exception import GoogleCaptcha
+from metafinder.utils.exception import GoogleCaptcha, GoogleCookiePolicies
 from metafinder.utils.agent import user_agent
 import urllib3
 urllib3.disable_warnings()
@@ -16,14 +16,19 @@ def search(target, total):
 		iterations += 1
 	## Check https://github.com/n4xh4ck5/RastLeak - thanks Nacho
 	url_base = f"https://www.google.com/search?q=(ext:pdf OR ext:doc OR ext:docx OR ext:xls OR ext:xlsx OR ext:ppt OR ext:pptx)+(site:*.{target} OR site:{target})&num={num}"
+	cookies = {"CONSENT": "YES+srp.gws"}
 	while (start < iterations) and (len(documents) < total):
 		try:
 			url = url_base + f"&start={start}"
 			response = requests.get(url, 
 			headers={'User-agent': 'APIs-Google (+https://developers.google.com/webmasters/APIs-Google.html)'},
 			timeout=5,
-			verify=False)
+			verify=False,
+			allow_redirects=False,
+			cookies=cookies)
 			text = response.text
+			if response.status_code == 302 and ("htps://www.google.com/webhp" in text or "https://consent.google.com" in text):
+				raise GoogleCookiePolicies()
 			if "detected unusual traffic" in text:
 				raise GoogleCaptcha()
 			soup = BeautifulSoup(text, "html.parser")
