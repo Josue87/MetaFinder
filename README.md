@@ -74,6 +74,11 @@ try:
 except FileNotFoundError:
     print("File not found")
 ```
+
+## Example
+
+![image](https://user-images.githubusercontent.com/16885065/118243158-69ee7600-b49e-11eb-9562-2dc1fab59d67.png)
+
 # Author
 
 This project has been developed by:
