@@ -20,9 +20,10 @@ def download_document(element, directory, display):
 	url = element[CONST_URL]
 	search_engines = element[CONST_SEARCH_ENGINES]
 	try:
-		name = url.split(sep)[-1]
-		file_name = directory + sep + name
 		response = requests.get(url, headers=user_agent.get(randint(0, len(user_agent)-1)), timeout=10, verify=False)
+		url = response.url
+		name = url.split(sep)[-1].split('?')[0]
+		file_name = directory + sep + name
 		s_code = response.status_code
 		data = {}
 		if s_code == 200:
