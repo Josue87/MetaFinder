@@ -1,8 +1,8 @@
-requests>=2.25.1
-pikepdf>=2.5.2
-beautifulsoup4>=4.9.3
-openpyxl>=3.0.5
-python-docx>=0.8.6
-python-pptx>=0.6.18
-prompt-toolkit>=3.0.5
-urllib3>=1.26.4
+requests
+pikepdf
+beautifulsoup4
+openpyxl
+python-docx
+python-pptx
+prompt-toolkit
+urllib3
