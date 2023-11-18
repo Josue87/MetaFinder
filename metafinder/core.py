@@ -1,11 +1,11 @@
-from metafinder.utils.finder import google
-from metafinder.utils.finder import bing
-from metafinder.utils.finder import baidu
+from metafinder.utils.color_print import print_error, print_ok
 from metafinder.utils.file.download import download_file
 from metafinder.utils.file.parser import file_parser_list, file_parser
-from metafinder.utils.color_print import print_error, print_ok
+from metafinder.utils.finder import baidu
+from metafinder.utils.finder import bing
+from metafinder.utils.finder import google
 from metafinder.utils.result import Result
-from metafinder.utils.var_data import * 
+from metafinder.utils.var_data import *
 
 
 def _get_links(target, limit, directory, threads, search_engines):
@@ -14,8 +14,8 @@ def _get_links(target, limit, directory, threads, search_engines):
         "google": google.search,
         "bing": bing.search,
         "baidu": baidu.search
-     }
-    for engine in search_engines_methods.keys():
+    }
+    for engine in search_engines_methods:
         aux_links = []
         if search_engines.get(engine, False):
             print(f"Searching in {engine}")
@@ -39,7 +39,7 @@ def _get_links(target, limit, directory, threads, search_engines):
             except KeyboardInterrupt:
                 print(f"{engine} interrupted\n")
             except Exception as ex:
-                 print_error(f"{engine} error {ex}", end="\n")
+                print_error(f"{engine} error {ex}", end="\n")
     return links
 
 
@@ -51,37 +51,46 @@ def processing(target, limit, directory, threads, search_engines):
     print("-" * len(links_msg))
     if total_links > 0:
         try:
-            metadata_result = Result(download_file(links, directory, threads))
-            authors = metadata_result.get_authors()
-            software = metadata_result.get_software()
-            metadata_files = metadata_result.get_metadata()
-            print("\nAnalyzing metadata...")
-            if metadata_files:
-                software_msg = f"Software data found: {len(software)}"
-                authors_msg = f"Authors found: {len(authors)}"
-                print(f"\n{authors_msg}")
-                print("-" * len(authors_msg))
-                for a in authors:
-                    print(a)
-                print(f"\n{software_msg}")
-                print("-" * len(software_msg))
-                for s in software:
-                    print(s)
-                metadata_filename = "metadata_result.txt"
-                authors_filename = "authors.txt"
-                software_filename = "software.txt"
-                file_parser_list(directory, authors_filename, authors)
-                file_parser_list(directory, software_filename, software)
-                print("")
-                print_ok(f"Authors data have been saved in file {directory}/{authors_filename}")
-                print_ok(f"Software data have been saved in file {directory}/{software_filename}")
-                file_parser(directory, metadata_filename, metadata_files)
-                print_ok(f"All metadata results have been saved in file {directory}/{metadata_filename}")
-            else:
-                print_error("No metadata found...")
+            process_links_and_extract_metadata(links, directory, threads)
         except KeyboardInterrupt:
             print("CTRL^C")
-        except:
+        except Exception:
             pass
     else:
         print("There is nothing to analyze. Closing...")
+
+
+def print_message_and_list(arg0, arg1):
+    print(f"\n{arg0}")
+    print("-" * len(arg0))
+    for a in arg1:
+        print(a)
+
+
+def save_and_display_extraction_results(software, authors, directory, metadata_files):
+    software_msg = f"Software data found: {len(software)}"
+    authors_msg = f"Authors found: {len(authors)}"
+    print_message_and_list(authors_msg, authors)
+    print_message_and_list(software_msg, software)
+    metadata_filename = "metadata_result.txt"
+    authors_filename = "authors.txt"
+    software_filename = "software.txt"
+    file_parser_list(directory, authors_filename, authors)
+    file_parser_list(directory, software_filename, software)
+    print("")
+    print_ok(f"Authors data have been saved in file {directory}/{authors_filename}")
+    print_ok(f"Software data have been saved in file {directory}/{software_filename}")
+    file_parser(directory, metadata_filename, metadata_files)
+    print_ok(f"All metadata results have been saved in file {directory}/{metadata_filename}")
+
+
+def process_links_and_extract_metadata(links, directory, threads):
+    metadata_result = Result(download_file(links, directory, threads))
+    authors = metadata_result.get_authors()
+    software = metadata_result.get_software()
+    metadata_files = metadata_result.get_metadata()
+    print("\nAnalyzing metadata...")
+    if metadata_files:
+        save_and_display_extraction_results(software, authors, directory, metadata_files)
+    else:
+        print_error("No metadata found...")

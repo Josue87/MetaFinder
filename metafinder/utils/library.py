@@ -1,23 +1,21 @@
-from pathlib import Path
 import tempfile
 from os.path import isfile
-from metafinder.utils.finder import google
-from metafinder.utils.finder import bing
-from metafinder.utils.finder import baidu
+
 from metafinder.utils.file.download import download_file
 from metafinder.utils.file.metadata import extract_metadata
+from metafinder.utils.finder import baidu
+from metafinder.utils.finder import bing
+from metafinder.utils.finder import google
 from metafinder.utils.result import Result
-from metafinder.utils.var_data import * 
+from metafinder.utils.var_data import *
 
 
 def _generate_list(links, search_engine):
-    result = []
-    for link in links:
-        result.append({
-            CONST_URL: link,
-            CONST_SEARCH_ENGINES: [search_engine]
-        })
-    return result
+    return [
+        {CONST_URL: link, CONST_SEARCH_ENGINES: [search_engine]}
+        for link in links
+    ]
+
 
 def extract_metadata_from_google_search(domain, limit=50, threads=4):
     """Search metadata in files through Google
@@ -42,6 +40,7 @@ def extract_metadata_from_google_search(domain, limit=50, threads=4):
     directory.cleanup()
     return Result(metadata_files) if metadata_files else None
 
+
 def extract_metadata_from_bing_search(domain, limit=50, threads=4):
     """Search metadata in files through Bing
 
@@ -63,6 +62,7 @@ def extract_metadata_from_bing_search(domain, limit=50, threads=4):
         metadata_files = download_file(_generate_list(links, "Bing"), directory.name, threads, False)
     directory.cleanup()
     return Result(metadata_files) if metadata_files else None
+
 
 def extract_metadata_from_baidu_search(domain, limit=50, threads=2):
     """Search metadata in PDF files through Baidu (slow method)
@@ -86,6 +86,7 @@ def extract_metadata_from_baidu_search(domain, limit=50, threads=2):
         metadata_files = download_file(_generate_list(links, "Baidu"), directory.name, threads, False)
     directory.cleanup()
     return Result(metadata_files) if metadata_files else None
+
 
 def extract_metadata_from_document(document):
     """Search metadata in a document
