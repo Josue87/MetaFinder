@@ -1,8 +1,6 @@
-
 from setuptools import setup, find_packages
-from os import path
-import metafinder
 
+import metafinder
 
 long_description = """
 **MetaFinder - Metadata search through Search Engines**
